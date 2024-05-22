@@ -5,6 +5,9 @@ Proceso Login_Completo
 	definir matrizusuario Como Caracter;
 	Dimension matrizusuario(100,2);
 	definir usuarioEncontrado como entero;
+	definir	datosClientes como cadena; 
+	Dimension  datosClientes(100,6);
+	
 	isadmin<-0;
 	parametroAdmin<-0;
 	parametroCliente <-0;
@@ -13,8 +16,17 @@ Proceso Login_Completo
 	matrizusuario[1,0] <- "Mercedes";
 	matrizusuario[1,1] <- "1234";
 	
+	//matriz datosClientes llenanado...
+	Para i <- 0 Hasta 99 Hacer
+        Para j <- 0 Hasta 5 Hacer
+            datosclientes[i, j] <- " ";
+        FinPara
+    FinPara
 	
 	para i <-2 hasta 99 Hacer
+		
+		
+		
 		para j <-0 hasta 1 hacer
 			
 			
@@ -71,12 +83,15 @@ Proceso Login_Completo
 		
 		Escribir "Menu admin";
 		Escribir  "1. Mostrar matriz usuarios";
+		Escribir  "2.Cargar Clientes";
 		leer parametroAdmin;
 		Segun parametroAdmin Hacer
 				
 	
 				1:
 					mostrarMatrizUsuario(matrizusuario) ;
+				2:
+					cargarNuevoCliente(datosClientes,matrizUsuario);
 				3:
 					Escribir "Saliste";
 					parametroAdmin<- 3;
@@ -88,13 +103,17 @@ Proceso Login_Completo
 	Mientras isadmin <> 1 y usuarioEncontrado = 1 y parametroCliente <> 3 Hacer
 		
 		Escribir "Menu cliente";
-		Escribir  "1.";
+		Escribir  "1.Ingresar Datos";
+		Escribir  "2. Generar Reserva ";
 		leer parametroCliente;
 		Segun parametroCliente Hacer
 			
 			
 			1:
-				Escribir "Opcion1 ";
+				Escribir "Ingresar Datos ";
+				
+			2:   
+				
 			3: 
 				Escribir "Salir";
 				parametroCliente<-3;
@@ -195,4 +214,129 @@ SubProceso  mostrarMatrizUsuario(matrizusuario)
 			
 	FinPara
 FinSubProceso
+
+SubProceso  cargarNuevoCliente(clientes Por Referencia,matrizUsuario Por Referencia)
+	Definir nombre, apellido, eMail, telefono, dni Como Caracter;
+	definir opcion, indice, i Como Entero;
+	definir arroba, puntoCom, valido, telefonoValido, dniValido Como Logico;
+	definir simboloArroba, simboloPuntoCom Como Caracter;
+	definir posicionFilaVacia_MU Como Entero;
 	
+	simboloArroba <- "@";
+	simboloPuntoCom <- ".com";
+	indice <- 0;
+	
+	
+	
+	Repetir
+		Para i <- 0 Hasta 99 Hacer
+			Si clientes[i, 0] = " " Entonces
+				indice <- i;
+			FinSi
+		FinPara
+		
+		Escribir "Por favor, ingrese el nombre del cliente: ";
+		leer nombre;
+		Escribir "Ingrese el apellido: ";
+		leer apellido;
+		
+		arroba <- Falso;
+		puntoCom <- Falso;
+		Repetir
+			Escribir "Ingrese la direcci?n de correo electr?nico: ";
+			leer eMail;
+			
+			Para i<-1 Hasta Longitud(eMail) Con Paso 1 Hacer
+				Si SubCadena(eMail,i,i) = simboloArroba Entonces
+					arroba <- Verdadero;
+				FinSi
+				
+			FinPara
+			
+			Si Subcadena(eMail,Longitud(eMail)-4,Longitud(eMail)) = simboloPuntoCom Entonces
+				puntoCom <- Verdadero;
+			FinSi
+			
+			Si arroba Y puntoCom Entonces
+				Escribir "El correo electr?nico es v?lido.";
+			Sino
+				Escribir "El correo electr?nico ingresado no es v?lido. Debe contener ", simboloArroba, " y terminar en ", simboloPuntoCom, ".";
+			FinSi
+		Hasta Que arroba Y puntoCom
+		
+		Repetir
+			telefonoValido <- Verdadero;
+			Escribir "Ingrese el n?mero de tel?fono (10 d?gitos): ";
+			Leer telefono;
+			Si Longitud(telefono) = 10 Entonces
+				Para i <- 0 Hasta Longitud(telefono)-1 Hacer
+					Si (SubCadena(telefono, i, i) < "0" o SubCadena(telefono, i, i) > "9") Entonces
+						telefonoValido <- Falso;
+					FinSi
+				FinPara
+			Sino
+				telefonoValido <- Falso;
+			FinSi
+			Si telefonoValido Entonces
+				Escribir "El n?mero de tel?fono es v?lido.";
+			Sino
+				Escribir "El n?mero de tel?fono debe tener 10 d?gitos y solo puede contener n?meros.";
+			FinSi
+		Hasta Que telefonoValido
+		
+		
+		
+		Repetir
+			dniValido <- Verdadero;
+			Escribir "Ingrese el DNI (8 d?gitos): ";
+			Leer dni;
+			Si Longitud(dni) <> 8 Entonces
+				dniValido <- Falso;
+			Sino
+				Si SubCadena(dni, 0, 0) = "0" y SubCadena(dni, 1, 1) = "0" Entonces
+					dniValido <- Falso;
+				FinSi
+				Para i <- 0 Hasta Longitud(dni)-1 Hacer
+					Si SubCadena(dni, i, i) < "0" o SubCadena(dni, i, i) > "9" Entonces
+						dniValido <- Falso;
+					FinSi
+				FinPara
+			FinSi
+			Si dniValido Entonces
+				Escribir "El DNI es v?lido.";
+			Sino
+				Escribir "El DNI debe tener 8 d?gitos, no puede comenzar con doble 0 y solo puede contener n?meros.";
+			FinSi
+		Hasta Que dniValido
+		
+		
+		
+		clientes[indice,0] <- nombre;
+		clientes[indice,1] <- apellido;
+		clientes[indice,2] <- eMail;
+		clientes[indice,3] <- telefono;
+		clientes[indice,4] <- dni;
+		clientes[indice,5] <- eMail;// Por defecto usuario es el correo 
+		
+		
+		para i <-0 Hasta 99 Hacer
+			si matrizusuario[i,0] = " " Entonces
+				
+				posicionFilaVacia_MU <- i;// MU <- MATRI< USUARIO 
+			FinSi
+		FinPara
+		
+		matrizUsuario[posicionFilaVacia_MU,0] <- eMail;
+		matrizUsuario[posicionFilaVacia_MU,1] <- dni;
+		
+		
+		
+		indice <- indice + 1;
+		
+		Escribir "INGRESE UNA OPCI?N: ";
+		Escribir "Opci?n 1: Ingresar Nuevo Cliente";
+		Escribir "Opci?n 2: Regresar al menu Admin ";
+		leer opcion;
+		
+	Hasta Que opcion = 2
+FinSubProceso
