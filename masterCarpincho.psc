@@ -7,6 +7,8 @@ Proceso Login_Completo
 	definir usuarioEncontrado como entero;
 	definir	datosClientes como cadena; 
 	Dimension  datosClientes(100,6);
+	definir matrizReservas como cadena;
+	dimensionar matrizReservas[100,3];
 	
 	isadmin<-0;
 	parametroAdmin<-0;
@@ -36,6 +38,21 @@ Proceso Login_Completo
 		FinPara
 	FinPara
 	
+	// Llenar la matriz de reservas con datos de prueba
+	matrizReservas[0,0] <- "1";
+	matrizReservas[0,1] <- "01-01-2024";
+	matrizReservas[0,2] <- "05-01-2024";
+	matrizReservas[1,0] <- "1";
+	matrizReservas[1,1] <- "10-01-2024";
+	matrizReservas[1,2] <- "15-01-2024";
+	// matirz reserva llenado
+	
+	Para i<- 2 Hasta 99 Hacer
+		para j<-0 hasta 2 Hacer
+			matrizReservas[i,j] <- " ";
+			
+		FinPara
+	FinPara
 	
 	
 	parametro <- 0 ;
@@ -112,7 +129,8 @@ Proceso Login_Completo
 			1:
 				Escribir "Ingresar Datos ";
 				
-			2:   
+			2:  
+				gernerarReserva(matrizReservas);
 				
 			3: 
 				Escribir "Salir";
@@ -339,4 +357,99 @@ SubProceso  cargarNuevoCliente(clientes Por Referencia,matrizUsuario Por Referen
 		leer opcion;
 		
 	Hasta Que opcion = 2
+FinSubProceso
+
+SubProceso gernerarReserva(matrizReservas Por Referencia)
+	Definir idhabitacion,i,DiasPorMes Como Entero;
+	Definir  fechaingreso ,fechaEgreso como cadena;
+	Dimension DiasPorMes(12);
+	Definir disponible Como Logico;
+	
+	// lleno DiasPorMes con los dias correspondientes
+	
+	para i<-0 hasta 11 Hacer
+		DiasPorMes[i] <- i;
+		Si i=0 o i=2 o i=4 o i=7 o i=9 Entonces
+			DiasPorMes[i] <- 31;
+		Sino
+			Si i=1 Entonces
+				
+				DiasPorMes[i] <- 29;
+	        SiNo
+				DiasPorMes[i] <-30;
+				
+			FinSi
+			
+			
+		FinSi
+		
+	FinPara
+	
+	
+	disponible <- Verdadero;
+	
+	// Le faltaria mostrame las habitacion
+	Escribir "Mostrar Habitacion , (Falta Esto )";
+	
+	Escribir "digite la habitacion que quiere Rersevar";
+	Leer idHabitacion;
+	
+	
+	
+	Escribir "Digite fecha de ingreso DD-MM-YYYY";
+	Leer  fechaingreso;
+	Escribir "Digite fecha de egreso DD-YY-YYYY";
+	Leer fechaEgreso;
+	
+	
+	verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaIngreso,fechaEgreso,disponibilidad);
+	
+	Escribir disponible;
+	
+	
+FinSubProceso
+
+
+Funcion x <- convertirFecha_aNumero(diaporMes,fechaCadena)
+	Definir i,j,dia,mes,diadelAnio,x como entero;
+	//fechaCadena DD-MM-YYYY
+	dia <- ConvertirANumero(subcadena(fechaCadena,0,1));
+	mes <-ConvertirANumero(subcadena(fechaCadena,3,4));
+	diadelAnio<-0;
+	
+	Para  i <-0 hasta mes -2 Hacer
+		
+		diadelAnio<- diadelAnio + DiaPorMes[i];
+	FinPara
+	diadelAnio<- diadelAnio+dia;
+	x<- diadelAnio;
+	
+	
+FinFuncion	
+
+SubProceso verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaIngreso,fechaEgreso,disponibilidad Por Referencia)
+	Definir fechaIngreso_dia,fechaEgreso_dia,i,posicion,fechaingreso_reservada,fechaegreso_reservada Como Entero;
+	
+	fechaIngreso_dia<- convertirFecha_aNumero(diasporMes,fechaIngreso);
+	fechaEgreso_dia <- convertirFecha_aNumero(diasporMes,fechaEgreso);
+	i<-0;
+	
+	Mientras matrizReservas[i,0] <> " " Hacer
+		i<-i+1;
+		posicion<- i;
+	FinMientras
+	
+	Para i <-0 hasta posicion-1 Hacer
+		si ConvertirANumero(matrizReservas[i,0]) =idHabitacion Entonces
+			fechaingreso_reservada <- convertirFecha_aNumero(DiasPorMes,matrizReservas[i,1]);
+			fechaegreso_reservada <- convertirFecha_aNumero(DiasPorMes,matrizReservas[i,2]);
+			
+			si (fechaIngreso_dia >= fechaingreso_reservada y fechaIngreso_dia <= fechaegreso_reservada) o (fechaegreso_dia >= fechaingreso_reservada y fechaegreso_dia <= fechaegreso_reservada) Entonces
+				disponibilidad<- Falso;
+			FinSi
+		FinSi
+	FinPara
+	
+	
+	
 FinSubProceso
