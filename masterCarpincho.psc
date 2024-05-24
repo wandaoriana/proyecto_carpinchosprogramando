@@ -9,6 +9,7 @@ Proceso Login_Completo
 	Dimension  datosClientes(100,6);
 	definir matrizReservas como cadena;
 	dimensionar matrizReservas[100,3];
+	Definir disponible Como Logico;
 	
 	isadmin<-0;
 	parametroAdmin<-0;
@@ -25,6 +26,7 @@ Proceso Login_Completo
         FinPara
     FinPara
 	
+	// MATRIZ usuario
 	para i <-2 hasta 99 Hacer
 		
 		
@@ -108,7 +110,7 @@ Proceso Login_Completo
 				1:
 					mostrarMatrizUsuario(matrizusuario) ;
 				2:
-					cargarNuevoCliente(datosClientes,matrizUsuario);
+					cargarNuevoCliente(datosClientes,matrizUsuario); // Mercedes Trabajo
 				3:
 					Escribir "Saliste";
 					parametroAdmin<- 3;
@@ -402,7 +404,7 @@ SubProceso gernerarReserva(matrizReservas Por Referencia)
 	Leer fechaEgreso;
 	
 	
-	verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaIngreso,fechaEgreso,disponibilidad);
+	verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaIngreso,fechaEgreso,disponible);
 	
 	Escribir disponible;
 	
@@ -427,7 +429,7 @@ Funcion x <- convertirFecha_aNumero(diaporMes,fechaCadena)
 	
 FinFuncion	
 
-SubProceso verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaIngreso,fechaEgreso,disponibilidad Por Referencia)
+SubProceso verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaIngreso,fechaEgreso,disponible Por Referencia)
 	Definir fechaIngreso_dia,fechaEgreso_dia,i,posicion,fechaingreso_reservada,fechaegreso_reservada Como Entero;
 	
 	fechaIngreso_dia<- convertirFecha_aNumero(diasporMes,fechaIngreso);
@@ -445,7 +447,7 @@ SubProceso verificarDisponibilidad(DiasPorMes,matrizReservas,idHabitacion,fechaI
 			fechaegreso_reservada <- convertirFecha_aNumero(DiasPorMes,matrizReservas[i,2]);
 			
 			si (fechaIngreso_dia >= fechaingreso_reservada y fechaIngreso_dia <= fechaegreso_reservada) o (fechaegreso_dia >= fechaingreso_reservada y fechaegreso_dia <= fechaegreso_reservada) Entonces
-				disponibilidad<- Falso;
+				disponible<-Falso;
 			FinSi
 		FinSi
 	FinPara
