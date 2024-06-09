@@ -104,45 +104,67 @@ Proceso Login_Completo
 	parametroNum <- 0;
 	
 	Mientras parametroNum <> 3 Hacer
-		Escribir "Menu";
+		// Encabezado del menú
+		Escribir "==================================================";
+		Escribir "=                    MENU                        =";
+		Escribir "==================================================";
 		Escribir "1. Ingresar usuario";
 		Escribir "2. Crear usuario";
 		Escribir "3. Salir";
+		Escribir "--------------------------------------------------";
+		Escribir "Digite una opción:";
 		Leer parametro;
 		
+		// Verificar si la opción ingresada es válida
 		Si parametro = "1" o parametro = "2" o parametro = "3" Entonces
 			parametroNum <- convertirANumero(parametro);
 		Sino
+			Escribir "==================================================";
+			Escribir "=               Opción inválida                  =";
+			Escribir "==================================================";
 			parametroNum <- 0;
 		FinSi
 		
-		
-		
+		// Procesar la opción seleccionada
 		Segun parametroNum Hacer
 			1:
-				Escribir "Ingresar usuario";
+				Escribir "--------------------------------------------------";
+				Escribir "=               Ingresar usuario                 =";
+				Escribir "--------------------------------------------------";
+				Escribir "Ingrese su nombre de usuario:";
 				Leer usuario;
 				usuarioEncontrado <- 0;
-				Escribir "Ingresar contrasenia";
+				Escribir "Ingrese su contraseña:";
 				Leer contrasenia1;
 				ingresarUsuario(usuario, contrasenia1, matrizUsuario, isAdmin, usuarioEncontrado);
 				
 				Si usuarioEncontrado = 1 Entonces
-					parametroNum <- 3;
+					Escribir "==================================================";
+					Escribir "=         Usuario encontrado, ingresando         =";
+					Escribir "==================================================";
+					parametroNum <- 3; // Salir del menú
 				FinSi
 				
 			2:
+				Escribir "--------------------------------------------------";
+				Escribir "=                Crear usuario                   =";
+				Escribir "--------------------------------------------------";
 				crearUsuario(matrizUsuario);
 				
 			3:
-				Escribir "Saliste";
-				parametroNum <- 3;
+				Escribir "==================================================";
+				Escribir "=                    Saliste                     =";
+				Escribir "==================================================";
+				parametroNum <- 3; // Salir del menú
 				
 			De Otro Modo:
-				Escribir "Opcion invalida";
-				Escribir  " ";
+				Escribir "==================================================";
+				Escribir "=               Opción inválida                  =";
+				Escribir "==================================================";
+				Escribir " ";
 		FinSegun
-	FinMientras
+FinMientras
+
 	
 	
 	//Escribir isadmin; // esto para verificar si es admin
@@ -153,37 +175,56 @@ Proceso Login_Completo
 	parametroAdmin <- 0;
 	
 	Mientras isAdmin = 1 y parametroAdmin <> 4 Hacer
-		Escribir "Menu admin";
-		Escribir "1. Mostrar matriz usuarios";
-		Escribir "2. Cargar Clientes";
-		Escribir "3. Mostrar Datos Clientes";
+		// Encabezado del menú de administrador
+		Escribir "==================================================";
+		Escribir "=                MENU ADMINISTRADOR              =";
+		Escribir "==================================================";
+		Escribir "1. Mostrar matriz de usuarios";
+		Escribir "2. Cargar clientes";
+		Escribir "3. Mostrar datos de clientes";
 		Escribir "4. Salir";
-		
+		Escribir "--------------------------------------------------";
+		Escribir "Digite una opción:";
 		Leer parametroAuxAdmin;
 		
-		// Verificar si la opción es válida
+		// Verificar si la opción ingresada es válida
 		Si parametroAuxAdmin = "1" o parametroAuxAdmin = "2" o parametroAuxAdmin = "3" o parametroAuxAdmin = "4" Entonces
 			parametroAdmin <- convertirANumero(parametroAuxAdmin);
 		Sino
-			Escribir "Opcion invalida";
-			
+			Escribir "==================================================";
+			Escribir "=               Opción inválida                  =";
+			Escribir "==================================================";
 		FinSi
 		
-		
-		
+		// Procesar la opción seleccionada
 		Segun parametroAdmin Hacer
 			1:
+				Escribir "--------------------------------------------------";
+				Escribir "=          Mostrando matriz de usuarios          =";
+				Escribir "--------------------------------------------------";
 				mostrarMatrizUsuario(matrizUsuario);
+				
 			2:
+				Escribir "--------------------------------------------------";
+				Escribir "=                Cargando clientes               =";
+				Escribir "--------------------------------------------------";
 				cargarNuevoCliente(datosClientes, matrizUsuario);
+				
 			3:
+				Escribir "--------------------------------------------------";
+				Escribir "=          Mostrando datos de clientes           =";
+				Escribir "--------------------------------------------------";
 				mostrarDatosClientes(datosClientes);
+				
 			4:
-				Escribir "Has Salido";
-				parametroAdmin <- 4;
+				Escribir "==================================================";
+				Escribir "=                   Has salido                   =";
+				Escribir "==================================================";
+				parametroAdmin <- 4; // Salir del menú de administrador
+				
 		FinSegun
 	FinMientras
-	
+
 	
 	
 	// ------------------------------- MENU CLIENTE ---------------------------------///
@@ -192,40 +233,56 @@ Proceso Login_Completo
 	parametroCliente <- 0;
 	
 	Mientras isAdmin <> 1 y usuarioEncontrado = 1 y parametroCliente <> 3 Hacer
-		Escribir "Menu cliente";
+		// Encabezado del menú de cliente
+		Escribir "==================================================";
+		Escribir "=                 MENU CLIENTE                   =";
+		Escribir "==================================================";
 		Escribir "1. Ingresar Datos";
 		Escribir "2. Generar Reserva";
 		Escribir "3. Salir";
+		Escribir "--------------------------------------------------";
+		Escribir "Digite una opción:";
 		
+		// Leer la opción del cliente
 		Leer parametroAuxCliente;
 		
 		// Verificar si la opción es válida
 		Si parametroAuxCliente = "1" o parametroAuxCliente = "2" o parametroAuxCliente = "3" Entonces
 			parametroCliente <- convertirANumero(parametroAuxCliente);
 		Sino
-			Escribir "Opcion invalida";
-			// Vuelve al inicio del bucle para pedir una opción nuevamente
+			Escribir "==================================================";
+			Escribir "=               Opción inválida                  =";
+			Escribir "==================================================";
 		FinSi
 		
-		
-		
+		// Procesar la opción seleccionada
 		Segun parametroCliente Hacer
 			1:
-				Escribir "Ingresar Datos";
+				Escribir "--------------------------------------------------";
+				Escribir "=             Ingresando Datos                   =";
+				Escribir "--------------------------------------------------";
 				ingresarDatosCliente(datosClientes, Usuario);
 				
 			2:
+				Escribir "--------------------------------------------------";
+				Escribir "=            Generando Reserva                   =";
+				Escribir "--------------------------------------------------";
 				generarReserva(matrizReservas, matrizHabitacion, matrizTipoHabitacion, usuario, variableMenu, datosClientes, tieneDatos);
 				parametroCliente <- variableMenu;
 				
 			3:
-				Escribir "Salir";
-				parametroCliente <- 3;
+				Escribir "==================================================";
+				Escribir "=                   Has salido                   =";
+				Escribir "==================================================";
+				parametroCliente <- 3; // Salir del menú cliente
 				
 			De Otro Modo:
-				Escribir "Opcion invalida";
+				Escribir "==================================================";
+				Escribir "=               Opción inválida                  =";
+				Escribir "==================================================";
 		FinSegun
 	FinMientras
+
 	
 FinProceso
 
