@@ -1,7 +1,7 @@
 Proceso Login_Completo
 	
-	definir parametro,parametroAdmin,i,j,isadmin , parametroCliente Como Entero;
-	Definir NuevoUsuario,nuevacontrasenia, usuario, contrasea1  Como Caracter;
+	definir i,j,isadmin Como Entero;
+	Definir NuevoUsuario,nuevacontrasenia, usuario, contrasenia1  Como Caracter;
 	definir matrizusuario Como Caracter;
 	Dimension matrizusuario(100,2);
 	definir usuarioEncontrado como entero;
@@ -16,24 +16,43 @@ Proceso Login_Completo
 	Dimensionar matriztipoHabitacion[3,2];
 	definir variableMenu como entero;
 	Definir tieneDatos Como Logico; // Esta variable se utiliza para verificar si el cliente tiene datos por defecto es falso
+	//definiendo parametros para menus 
+	Definir parametro como cadena;
+	definir parametroNum como entero; 
+	Definir parametroAuxAdmin como cadena;
+	Definir parametroAdmin como entero;
+	Definir parametroAuxCliente como cadena;
+	Definir parametroCliente como entero;
 	
 	isadmin<-0;
 	tieneDatos<- falso;
 	
-	matrizusuario[0,0] <- "Wanda";
+	matrizusuario[0,0] <- "Liliana97";
 	matrizusuario[0,1] <- "1997";
-	matrizusuario[1,0] <- "Mercedes";
+	matrizusuario[1,0] <- "Luis86";
 	matrizusuario[1,1] <- "1234";
+	matrizusuario[2,0]  <- "admin";
+	matrizusuario[2,1] <-"1998";
 	
-	//matriz datosClientes llenanado...
+	//matriz datosClientes llenado...
 	Para i <- 0 Hasta 99 Hacer
         Para j <- 0 Hasta 5 Hacer
             datosclientes[i, j] <- " ";
         FinPara
     FinPara
 	
+	
+	// datosClientes de prueba
+	datosClientes[0,0]<-"Liliana";
+	datosClientes[0,1]<- "Murguia";
+	
+	datosClientes[0,2]<- "liliana@gmail.com";
+	datosClientes[0,3]<- "1133146155";
+	datosClientes[0,4]<- "40639651";
+	datosClientes[0,5]<- "Liliana97";
+	
 	// MATRIZ usuario
-	para i <-2 hasta 99 Hacer
+	para i <-3 hasta 99 Hacer
 		para j <-0 hasta 1 hacer
 			matrizusuario[i,j] <- " " ;
 		FinPara
@@ -82,103 +101,132 @@ Proceso Login_Completo
 	
 	
 	// ---------------------------------- MENU PRINCIPAL -----------------------------------------///////////
-	parametro <- 0 ;
+	parametroNum <- 0;
 	
-	Mientras parametro <> 3 Hacer
+	Mientras parametroNum <> 3 Hacer
 		Escribir "Menu";
-		Escribir "1.Ingresar usuario";
-		Escribir "2.Crear usuario";
-		Escribir "3.Salir";
-		leer parametro;
+		Escribir "1. Ingresar usuario";
+		Escribir "2. Crear usuario";
+		Escribir "3. Salir";
+		Leer parametro;
 		
-		Segun parametro hacer
-			1: Escribir "Ingresar usuario";
-				leer usuario;
-				usuarioEncontrado <-0;
+		Si parametro = "1" o parametro = "2" o parametro = "3" Entonces
+			parametroNum <- convertirANumero(parametro);
+		Sino
+			parametroNum <- 0;
+		FinSi
+		
+		
+		
+		Segun parametroNum Hacer
+			1:
+				Escribir "Ingresar usuario";
+				Leer usuario;
+				usuarioEncontrado <- 0;
 				Escribir "Ingresar contrasenia";
-				Leer contrasea1;			
-				IngresarUsuario(usuario,contrasea1,matrizusuario,isadmin ,usuarioEncontrado);
-				si usuarioEncontrado = 1 Entonces
-					parametro <-3; 
-					
+				Leer contrasenia1;
+				ingresarUsuario(usuario, contrasenia1, matrizUsuario, isAdmin, usuarioEncontrado);
+				
+				Si usuarioEncontrado = 1 Entonces
+					parametroNum <- 3;
 				FinSi
 				
 			2:
-				CrearUsuario(matrizusuario);
+				crearUsuario(matrizUsuario);
 				
+			3:
+				Escribir "Saliste";
+				parametroNum <- 3;
 				
-			3: 
-				Escribir"Saliste";
-				
-				parametro <-3;
 			De Otro Modo:
 				Escribir "Opcion invalida";
-				
-				
+				Escribir  " ";
 		FinSegun
 	FinMientras
+	
 	
 	//Escribir isadmin; // esto para verificar si es admin
 	//Escribir usuarioEncontrado; 
 	
 	
 	// ---------------------------------------------- MENU ADMINISTRADOR -------------------------------------------------------////
-	parametroAdmin<-0;
+	parametroAdmin <- 0;
 	
-	Mientras isadmin = 1 y parametroAdmin <>3 Hacer
-		
+	Mientras isAdmin = 1 y parametroAdmin <> 4 Hacer
 		Escribir "Menu admin";
-		Escribir  "1. Mostrar matriz usuarios";
-		Escribir  "2.Cargar Clientes";
-		leer parametroAdmin;
+		Escribir "1. Mostrar matriz usuarios";
+		Escribir "2. Cargar Clientes";
+		Escribir "3. Mostrar Datos Clientes";
+		Escribir "4. Salir";
+		
+		Leer parametroAuxAdmin;
+		
+		// Verificar si la opción es válida
+		Si parametroAuxAdmin = "1" o parametroAuxAdmin = "2" o parametroAuxAdmin = "3" o parametroAuxAdmin = "4" Entonces
+			parametroAdmin <- convertirANumero(parametroAuxAdmin);
+		Sino
+			Escribir "Opcion invalida";
+			
+		FinSi
+		
+		
+		
 		Segun parametroAdmin Hacer
-			
-			
 			1:
-				mostrarMatrizUsuario(matrizusuario) ;
+				mostrarMatrizUsuario(matrizUsuario);
 			2:
-				cargarNuevoCliente(datosClientes,matrizUsuario); // Mercedes Trabajo
+				cargarNuevoCliente(datosClientes, matrizUsuario);
 			3:
-				Escribir "Saliste";
-				parametroAdmin<- 3;
-			De Otro Modo:
-				Escribir "Opcion invalida";
-				
+				mostrarDatosClientes(datosClientes);
+			4:
+				Escribir "Has Salido";
+				parametroAdmin <- 4;
 		FinSegun
 	FinMientras
+	
 	
 	
 	// ------------------------------- MENU CLIENTE ---------------------------------///
-	parametroCliente <-0;
 	variableMenu<-0; //Esta variable sale del subproceso generarReserva para dar ingresar al loop nuevamente de generar reserva en caso que el cliente no encuentre habitacion en la fecha solicitada
 	//Esta variable tambien se utiliza para regresar al menu cliente.
-	Mientras isadmin <> 1 y usuarioEncontrado = 1 y parametroCliente <> 3 Hacer
-		
+	parametroCliente <- 0;
+	
+	Mientras isAdmin <> 1 y usuarioEncontrado = 1 y parametroCliente <> 3 Hacer
 		Escribir "Menu cliente";
-		Escribir  "1.Ingresar Datos";
-		Escribir  "2. Generar Reserva ";
+		Escribir "1. Ingresar Datos";
+		Escribir "2. Generar Reserva";
 		Escribir "3. Salir";
-		leer parametroCliente;
+		
+		Leer parametroAuxCliente;
+		
+		// Verificar si la opción es válida
+		Si parametroAuxCliente = "1" o parametroAuxCliente = "2" o parametroAuxCliente = "3" Entonces
+			parametroCliente <- convertirANumero(parametroAuxCliente);
+		Sino
+			Escribir "Opcion invalida";
+			// Vuelve al inicio del bucle para pedir una opción nuevamente
+		FinSi
+		
+		
+		
 		Segun parametroCliente Hacer
-			
-			
 			1:
-				Escribir "Ingresar Datos ";
+				Escribir "Ingresar Datos";
+				ingresarDatosCliente(datosClientes, Usuario);
 				
-			2:  
-				gernerarReserva(matrizReservas,matrizHabitacion,matrizTipoHabitacion,usuario,variableMenu,datosClientes,tieneDatos);
-				parametroCliente<-variableMenu;
+			2:
+				generarReserva(matrizReservas, matrizHabitacion, matrizTipoHabitacion, usuario, variableMenu, datosClientes, tieneDatos);
+				parametroCliente <- variableMenu;
 				
-			3: 
+			3:
 				Escribir "Salir";
-				parametroCliente<-3;
+				parametroCliente <- 3;
 				
 			De Otro Modo:
-				Escribir "Opcion Invalida";
-				
-				
+				Escribir "Opcion invalida";
 		FinSegun
 	FinMientras
+	
 FinProceso
 
 SubProceso IngresarUsuario(usuario,contrasea1,matrizusuario,isadmin Por Referencia, usuarioEncontrado Por Referencia)
@@ -396,17 +444,19 @@ SubProceso  cargarNuevoCliente(clientes Por Referencia,matrizUsuario Por Referen
 	Hasta Que opcion = 2
 FinSubProceso
 
-SubProceso gernerarReserva(matrizReservas Por Referencia,matrizHabitacion,matrizTipoHabitacion,usuario,variableMenu Por Referencia,datosClientes,tieneDatos)
+SubProceso generarReserva(matrizReservas Por Referencia,matrizHabitacion,matrizTipoHabitacion,usuario,variableMenu Por Referencia,datosClientes,tieneDatos)
 	
 	
 	
 	Definir idhabitacion,DiasPorMes,i,j,idHabitacionElegida  Como Entero;
-	Definir  fechaingreso ,fechaEgreso como cadena;
+	Definir  fechaingreso ,fechaEgreso,parametro como cadena;
 	Dimension DiasPorMes(12);
 	Definir disponible Como Logico;
+	
 	Definir parametroReserva,tipoHabitacionElegida Como Entero;
 	Definir noDisponibilidad como logico;
-	
+	definir fechaIngresoValida como logico;
+	Definir fechaEgresoValida Como Logico;
 	// lleno DiasPorMes con los dias correspondientes
 	
 	para i<-0 hasta 11 Hacer
@@ -423,11 +473,32 @@ SubProceso gernerarReserva(matrizReservas Por Referencia,matrizHabitacion,matriz
 	FinPara
 	
 	
-	// Ingresar fecha de ingreso y fecha de egreso
-	Escribir "Digite fecha de ingreso DD-MM-YYYY";
-	Leer  fechaingreso;
-	Escribir "Digite fecha de egreso DD-YY-YYYY";
-	Leer fechaEgreso;
+	fechaIngresoValida<-Falso;
+	// Repetir hasta obtener una fecha de ingreso válida
+	Repetir
+		Escribir "Digite fecha de ingreso DD-MM-YYYY";
+		Leer fechaIngreso;
+		verificarFecha(fechaIngreso, fechaIngresoValida);
+		Si fechaIngresoValida Entonces
+			Escribir "La fecha de ingreso es válida.";
+		Sino
+			Escribir "La fecha de ingreso no es válida. Debe estar en formato DD-MM-YYYY.";
+		FinSi
+	Hasta Que fechaIngresoValida = Verdadero
+	
+	
+	fechaEgresoValida<-falso;
+	// Repetir hasta obtener una fecha de egreso válida
+	Repetir
+		Escribir "Digite fecha de egreso DD-MM-YYYY";
+		Leer fechaEgreso;
+		verificarFecha(fechaEgreso, fechaEgresoValida);
+		Si fechaEgresoValida Entonces
+			Escribir "La fecha de egreso es válida.";
+		Sino
+			Escribir "La fecha de egreso no es válida. Debe estar en formato DD-MM-YYYY.";
+		FinSi
+	Hasta Que fechaEgresoValida=Verdadero
 	
 	// Se muestran lostipos de habitaciones del hotel 
 	Escribir "Digite una opcion:";
@@ -490,43 +561,64 @@ SubProceso gernerarReserva(matrizReservas Por Referencia,matrizHabitacion,matriz
 	
 	
 	//basta con una habitacion que este disponible
-	si noDisponibilidad = falso Entonces
-		Escribir "No hay habitaciones disponibles";
-		
+	// Verificar disponibilidad de habitaciones
+	Si noDisponibilidad = falso Entonces
+		Escribir "==================================================";
+		Escribir "=          No hay habitaciones disponibles        =";
+		Escribir "==================================================";
 	SiNo
+		Escribir "--------------------------------------------------";
+		Escribir "=            Opciones de Reserva                 =";
+		Escribir "--------------------------------------------------";
+		Escribir "Digite una opción para la habitación elegida:";
+		Leer idHabitacionElegida;
 		
-		Escribir "Digite una opcion:";
-		leer idHabitacionElegida;
+		parametroReserva <- 0;
 		
-		
-		parametroReserva<-0;
-		mientras parametroReserva <> 3 Hacer
+		Mientras parametroReserva <> 3 Hacer
+			Escribir "--------------------------------------------------";
+			Escribir "=             Desea usted reservar?              =";
+			Escribir "--------------------------------------------------";
+			Escribir "1. Si";
+			Escribir "2. Regresar a MENU CLIENTE";
+			Escribir "--------------------------------------------------";
+			Escribir "Digite una opción:";
 			
+			Leer parametro;
 			
-			Escribir "Desea usted reservar";
-			Escribir "1.Si";
-			Escribir "2.Regresar a MENU CLIENTE";
+			// Verificar si la opción es válida
+			Si parametro = "1" o parametro = "2" Entonces
+				parametroReserva <- convertirANumero(parametro);
+			Sino
+				Escribir "==================================================";
+				Escribir "=               Opción inválida                  =";
+				Escribir "==================================================";
+			FinSi
 			
-			Escribir "Digite una opcion";
-			leer parametroReserva;
+			Escribir "Opción seleccionada: ", parametroReserva;
 			
-			segun parametroReserva Hacer
-				
-				1: 
-					verificarDatos(datosClientes,Usuario,tieneDatos);
-					si tieneDatos =Verdadero Entonces
-						
-						AniadiendoReserva(matrizReservas,fechaIngreso,fechaEgreso,idHabitacionElegida,usuario);
+			Segun parametroReserva Hacer
+				1:
+					verificarDatos(datosClientes, Usuario, tieneDatos);
+					Si tieneDatos = Verdadero Entonces
+						Escribir "--------------------------------------------------";
+						Escribir "=      Añadiendo reserva para el usuario...       =";
+						Escribir "--------------------------------------------------";
+						aniadiendoReserva(matrizReservas, fechaIngreso, fechaEgreso, idHabitacionElegida, usuario);
 					SiNo
-						Escribir "No tiene datos Ingresados, no puede reservar por el momento , por favor cargue sus datos";
-						parametroReserva <- 3;
+						Escribir "==================================================";
+						Escribir "=  No tiene datos ingresados, no puede reservar  =";
+						Escribir "=  por el momento. Por favor cargue sus datos.   =";
+						Escribir "==================================================";
+						parametroReserva <- 3; // Salir al menú cliente
 					FinSi
 					
-				2: 
-					parametroReserva<-3;
-					// mostrarreserva(matrizReservas);
+				2:
+					Escribir "--------------------------------------------------";
+					Escribir "=         Regresando al MENÚ CLIENTE...           =";
+					Escribir "--------------------------------------------------";
+					parametroReserva <- 3; // Regresar al menú cliente
 			FinSegun
-			
 		FinMientras
 		
 		
@@ -645,4 +737,170 @@ SubProceso verificarDatos(datosClientes,Usuario,tieneDatos Por Referencia)
 	
 	
 	
+FinSubProceso
+
+SubProceso  ingresarDatosCliente(clientes Por Referencia,Usuario)
+	Definir nombre, apellido, eMail, telefono, dni Como Caracter;
+	definir opcion, indice, i,j Como Entero;
+	definir arroba, puntoCom, valido, telefonoValido, dniValido Como Logico;
+	definir simboloArroba, simboloPuntoCom Como Caracter;
+	definir posicionFilaVacia_MU Como Entero;
+	
+	simboloArroba <- "@";
+	simboloPuntoCom <- ".com";
+	indice <- 0;
+	
+	
+	i<-0;
+	
+	Mientras clientes[i,0] <> " " Hacer
+		
+		i <- i + 1;
+		indice <- i;
+		
+	FinMientras
+	
+	
+	
+	Escribir indice;
+	
+	Para i <- 0 Hasta 99 Hacer
+		Si clientes[i, 5] = Usuario Entonces 
+			indice <- i;
+		FinSi
+	FinPara
+	
+	Escribir "Por favor, ingrese el nombre del cliente: ";
+	leer nombre;
+	Escribir "Ingrese el apellido: ";
+	leer apellido;
+	
+	arroba <- Falso;
+	puntoCom <- Falso;
+	Repetir
+		Escribir "Ingrese la direccion de correo electronico: ";
+		leer eMail;
+		
+		Para i<-1 Hasta Longitud(eMail) Con Paso 1 Hacer
+			Si SubCadena(eMail,i,i) = simboloArroba Entonces
+				arroba <- Verdadero;
+			FinSi
+			
+		FinPara
+		
+		Si Subcadena(eMail,Longitud(eMail)-4,Longitud(eMail)) = simboloPuntoCom Entonces
+			puntoCom <- Verdadero;
+		FinSi
+		
+		Si arroba Y puntoCom Entonces
+			Escribir "El correo electronico es valido.";
+		Sino
+			Escribir "El correo electronico ingresado no es v?lido. Debe contener ", simboloArroba, " y terminar en ", simboloPuntoCom, ".";
+		FinSi
+	Hasta Que arroba Y puntoCom
+	
+	Repetir
+		telefonoValido <- Verdadero;
+		Escribir "Ingrese el numero de telefono (10 digitos): ";
+		Leer telefono;
+		Si Longitud(telefono) = 10 Entonces
+			Para i <- 0 Hasta Longitud(telefono)-1 Hacer
+				Si (SubCadena(telefono, i, i) < "0" o SubCadena(telefono, i, i) > "9") Entonces
+					telefonoValido <- Falso;
+				FinSi
+			FinPara
+		Sino
+			telefonoValido <- Falso;
+		FinSi
+		Si telefonoValido Entonces
+			Escribir "El numero de telefono es valido.";
+		Sino
+			Escribir "El numero de telefono debe tener 10 d?gitos y solo puede contener n?meros.";
+		FinSi
+	Hasta Que telefonoValido
+	
+	
+	
+	Repetir
+		dniValido <- Verdadero;
+		Escribir "Ingrese el DNI (8 digitos): ";
+		Leer dni;
+		Si Longitud(dni) <> 8 Entonces
+			dniValido <- Falso;
+		Sino
+			Si SubCadena(dni, 0, 0) = "0" y SubCadena(dni, 1, 1) = "0" Entonces
+				dniValido <- Falso;
+			FinSi
+			Para i <- 0 Hasta Longitud(dni)-1 Hacer
+				Si SubCadena(dni, i, i) < "0" o SubCadena(dni, i, i) > "9" Entonces
+					dniValido <- Falso;
+				FinSi
+			FinPara
+		FinSi
+		Si dniValido Entonces
+			Escribir "El DNI es valido.";
+		Sino
+			Escribir "El DNI debe tener 8 digitos, no puede comenzar con doble 0 y solo puede contener numeros.";
+		FinSi
+	Hasta Que dniValido
+	
+	
+	//
+	clientes[indice,0] <- nombre;
+	clientes[indice,1] <- apellido;
+	clientes[indice,2] <- eMail;
+	clientes[indice,3] <- telefono;
+	clientes[indice,4] <- dni;
+	clientes[indice,5] <- Usuario;
+	
+	
+	
+	
+	Escribir  " ";
+	
+FinSubProceso
+
+SubProceso mostrarDatosClientes(datosClientes)
+	definir i, j Como Entero;
+	
+	Para i <-0 hasta 6 Hacer
+		para j <- 0 hasta 5 Hacer
+			Escribir Sin Saltar " ",datosClientes[i,j] ," ";
+		FinPara
+		Escribir " ";
+	FinPara
+	
+FinSubProceso
+
+
+SubProceso verificarFecha(fecha, fechaValida Por Referencia)
+	
+    Definir dia, mes, anio Como Entero;
+    fechaValida <- Verdadero;
+    
+    // Verificar que la fecha tenga exactamente 10 caracteres
+    Si Longitud(fecha) <> 10 Entonces
+        fechaValida <- Falso;
+    Sino
+        // Verificar que los caracteres en las posiciones 3 y 6 sean guiones
+        Si SubCadena(fecha, 2, 2) <> "-" o SubCadena(fecha, 5, 5) <> "-" Entonces
+            fechaValida <- Falso;
+        Sino
+            // Extraer y convertir día, mes y año a números
+            dia <- ConvertirANumero(SubCadena(fecha, 0, 1));
+            mes <- ConvertirANumero(SubCadena(fecha, 3, 4));
+            anio <- ConvertirANumero(SubCadena(fecha, 6, 9));
+            
+            // Verificar que día, mes y año sean números válidos
+            Si dia < 1 o dia > 31 Entonces
+                fechaValida <- Falso;
+            FinSi
+            Si mes < 1 o mes > 12 Entonces
+                fechaValida <- Falso;
+            FinSi
+            Si anio < 1 Entonces // Año debe ser mayor a 0
+                fechaValida <- Falso;
+            FinSi
+        FinSi
+    FinSi
 FinSubProceso
