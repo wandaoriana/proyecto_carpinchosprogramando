@@ -509,7 +509,7 @@ SubProceso generarReserva(matrizReservas Por Referencia,matrizHabitacion,matrizT
 	Definir  fechaingreso ,fechaEgreso,parametro como cadena;
 	Dimension DiasPorMes(12);
 	Definir disponible Como Logico;
-	
+	Definir fechaEgresoNumero , fechaIngresoNumero Como Entero;
 	Definir parametroReserva,tipoHabitacionElegida Como Entero;
 	Definir noDisponibilidad como logico;
 	definir fechaIngresoValida como logico;
@@ -530,7 +530,7 @@ SubProceso generarReserva(matrizReservas Por Referencia,matrizHabitacion,matrizT
 	FinPara
 	
 	
-	fechaIngresoValida<-Falso;
+	fechaIngresoValida <- Falso;
 	// Repetir hasta obtener una fecha de ingreso válida
 	Repetir
 		Escribir "Digite fecha de ingreso DD-MM-YYYY";
@@ -543,19 +543,27 @@ SubProceso generarReserva(matrizReservas Por Referencia,matrizHabitacion,matrizT
 		FinSi
 	Hasta Que fechaIngresoValida = Verdadero
 	
-	
-	fechaEgresoValida<-falso;
-	// Repetir hasta obtener una fecha de egreso válida
+	fechaEgresoValida <- Falso;
+	// Repetir hasta obtener una fecha de egreso válida que sea mayor que la fecha de ingreso
 	Repetir
 		Escribir "Digite fecha de egreso DD-MM-YYYY";
 		Leer fechaEgreso;
 		verificarFecha(fechaEgreso, fechaEgresoValida);
+		// Verificar si la fecha de egreso es mayor que la fecha de ingreso
 		Si fechaEgresoValida Entonces
-			Escribir "La fecha de egreso es válida.";
+			fechaIngresoNumero <- convertirFecha_aNumero(DiasPorMes,fechaIngreso);
+			fechaEgresoNumero <- convertirFecha_aNumero(DiasPorMes,fechaEgreso);
+			Si fechaEgresoNumero <= fechaIngresoNumero Entonces
+				Escribir "La fecha de egreso debe ser mayor que la fecha de ingreso.";
+				fechaEgresoValida <- Falso;
+			Sino
+				Escribir "La fecha de egreso es válida.";
+			FinSi
 		Sino
 			Escribir "La fecha de egreso no es válida. Debe estar en formato DD-MM-YYYY.";
 		FinSi
-	Hasta Que fechaEgresoValida=Verdadero
+	Hasta Que fechaEgresoValida = Verdadero
+
 	
 	// Se muestran lostipos de habitaciones del hotel 
 	Escribir "Digite una opcion:";
@@ -662,6 +670,7 @@ SubProceso generarReserva(matrizReservas Por Referencia,matrizHabitacion,matrizT
 						Escribir "=      Añadiendo reserva para el usuario...       =";
 						Escribir "--------------------------------------------------";
 						aniadiendoReserva(matrizReservas, fechaIngreso, fechaEgreso, idHabitacionElegida, usuario);
+						parametroReserva <- 3;
 					SiNo
 						Escribir "==================================================";
 						Escribir "=  No tiene datos ingresados, no puede reservar  =";
@@ -744,7 +753,7 @@ SubProceso aniadiendoReserva(matrizReservas,fechaIngreso,fechaEgreso,idHabitacio
 		
 	FinMientras
 	
-	Escribir posicionFila;//probando si encuentra la fila vacia 
+	//Escribir posicionFila;//probando si encuentra la fila vacia 
 	
 	matrizReservas[posicionFila,0] <- ConvertirATexto(idHabitacionElegida);
 	matrizReservas[posicionFila,1] <-fechaIngreso;
@@ -931,7 +940,6 @@ FinSubProceso
 
 
 SubProceso verificarFecha(fecha, fechaValida Por Referencia)
-	
     Definir dia, mes, anio Como Entero;
     fechaValida <- Verdadero;
     
@@ -955,7 +963,7 @@ SubProceso verificarFecha(fecha, fechaValida Por Referencia)
             Si mes < 1 o mes > 12 Entonces
                 fechaValida <- Falso;
             FinSi
-            Si anio < 1 Entonces // Año debe ser mayor a 0
+            Si anio <> 2024 Entonces // Año debe ser igual a 2024
                 fechaValida <- Falso;
             FinSi
         FinSi
