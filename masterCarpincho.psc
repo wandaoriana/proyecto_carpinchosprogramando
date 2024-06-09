@@ -27,12 +27,21 @@ Proceso Login_Completo
 	isadmin<-0;
 	tieneDatos<- falso;
 	
+	// MATRIZ usuario
+	para i <-0 hasta 99 Hacer
+		para j <-0 hasta 1 hacer
+			matrizusuario[i,j] <- " " ;
+		FinPara
+	FinPara
+	
 	matrizusuario[0,0] <- "Liliana97";
 	matrizusuario[0,1] <- "1997";
 	matrizusuario[1,0] <- "Luis86";
 	matrizusuario[1,1] <- "1234";
 	matrizusuario[2,0]  <- "admin";
 	matrizusuario[2,1] <-"1998";
+	matrizUsuario[3,0]<-"Juan123";
+	matrizUsuario[3,1] <- "1234";
 	
 	//matriz datosClientes llenado...
 	Para i <- 0 Hasta 99 Hacer
@@ -45,18 +54,19 @@ Proceso Login_Completo
 	// datosClientes de prueba
 	datosClientes[0,0]<-"Liliana";
 	datosClientes[0,1]<- "Murguia";
-	
 	datosClientes[0,2]<- "liliana@gmail.com";
 	datosClientes[0,3]<- "1133146155";
 	datosClientes[0,4]<- "40639651";
 	datosClientes[0,5]<- "Liliana97";
+	datosClientes[1, 0] <- "Juan";
+	datosClientes[1, 1] <- "Perez";
+	datosClientes[1, 2] <- "juanperez@gmail.com";
+	datosClientes[1, 3] <- "1122334455";
+	datosClientes[1, 4] <- "12345678";
+	datosClientes[1, 5] <- "Juan123";
+
 	
-	// MATRIZ usuario
-	para i <-3 hasta 99 Hacer
-		para j <-0 hasta 1 hacer
-			matrizusuario[i,j] <- " " ;
-		FinPara
-	FinPara
+	
 	
 	// Llenar la matriz de reservas con datos de prueba
 	matrizReservas[0,0] <- "1";
@@ -927,9 +937,14 @@ SubProceso  ingresarDatosCliente(clientes Por Referencia,Usuario)
 FinSubProceso
 
 SubProceso mostrarDatosClientes(datosClientes)
-	definir i, j Como Entero;
-	
-	Para i <-0 hasta 6 Hacer
+	definir i, j,posicion Como Entero;
+	posicion<-0;
+	i<-0;
+	Mientras datosClientes[i,0]<> " " Hacer
+		posicion<- i;
+		i<- i+1;
+	FinMientras
+	Para i <-0 hasta posicion Hacer
 		para j <- 0 hasta 5 Hacer
 			Escribir Sin Saltar " ",datosClientes[i,j] ," ";
 		FinPara
