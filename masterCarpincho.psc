@@ -9,7 +9,7 @@ Proceso HotelPosadaDelCarpincho
 	Dimension  datosClientes(100,6);
 	definir matrizReservas como cadena;
 	dimensionar matrizReservas[100,4];
-	Definir disponible Como Logico;
+	Definir disponible Como Logico; 
 	definir matrizHabitacion Como cadena;
 	Definir matrizTipoHabitacion Como cadena;
 	Dimensionar matrizHabitacion[10,2];
@@ -23,7 +23,7 @@ Proceso HotelPosadaDelCarpincho
 	Definir parametroAdmin como entero;
 	Definir parametroAuxCliente como cadena;
 	Definir parametroCliente como entero;
-	
+	usuarioEncontrado <-0;
 	isadmin<-0;
 	tieneDatos<- falso;
 	
@@ -77,7 +77,7 @@ Proceso HotelPosadaDelCarpincho
 	matrizReservas[1,0] <- "1";
 	matrizReservas[1,1] <- "10-01-2024";
 	matrizReservas[1,2] <- "15-01-2024";
-	matrizReservas[1,3] <- "Liliana97";
+	matrizReservas[1,3] <- "Juan123";
 	
 	
 	// matirz reserva llenado -----
@@ -272,14 +272,15 @@ Proceso HotelPosadaDelCarpincho
 	//Esta variable tambien se utiliza para regresar al menu cliente.
 	parametroCliente <- 0;
 	
-	Mientras isAdmin <> 1 y usuarioEncontrado = 1 y parametroCliente <> 3 Hacer
+	Mientras isAdmin <> 1 y usuarioEncontrado = 1 y parametroCliente <> 4 Hacer
 		// Encabezado del menú de cliente
 		Escribir "==================================================";
 		Escribir "=                 MENU CLIENTE                   =";
 		Escribir "==================================================";
 		Escribir "1. Ingresar Datos";
 		Escribir "2. Generar Reserva";
-		Escribir "3. Salir";
+		Escribir "3. Imprimir Factura";
+		Escribir "4. Salir";
 		Escribir "--------------------------------------------------";
 		Escribir "Digite una opción:";
 		
@@ -287,7 +288,7 @@ Proceso HotelPosadaDelCarpincho
 		Leer parametroAuxCliente;
 		
 		// Verificar si la opción es válida
-		Si parametroAuxCliente = "1" o parametroAuxCliente = "2" o parametroAuxCliente = "3" Entonces
+		Si parametroAuxCliente = "1" o parametroAuxCliente = "2" o parametroAuxCliente = "3" o parametroAuxCliente = "4" Entonces
 			parametroCliente <- convertirANumero(parametroAuxCliente);
 		Sino
 			Escribir "==================================================";
@@ -310,11 +311,25 @@ Proceso HotelPosadaDelCarpincho
 				generarReserva(matrizReservas, matrizHabitacion, matrizTipoHabitacion, usuario, variableMenu, datosClientes, tieneDatos);
 				parametroCliente <- variableMenu;
 				
-			3:
+			3:  
+				Escribir "--------------------------------------------------";
+				Escribir "=             Generando Factura                  =";
+				Escribir "--------------------------------------------------";
+				
+				ImprimirFactura(matrizUsuario,matrizReservas,Usuario,matrizHabitacion, datosClientes,variableMenu);
+				parametroCliente <- variableMenu;
+				
+				
+				
+			4:
 				Escribir "==================================================";
 				Escribir "=                   Has salido                   =";
 				Escribir "==================================================";
-				parametroCliente <- 3; // Salir del menú cliente
+				parametroCliente <- 4; // Salir del menú cliente
+				
+				
+				
+				
 				
 			De Otro Modo:
 				Escribir "==================================================";
@@ -376,7 +391,7 @@ SubProceso CrearUsuario(matrizusuario Por Referencia)
 	parametro2<-0;
 	usuarioIgual <- falso;
 	
-	Mientras usuarioIgual = falso Hacer
+	Mientras usuarioIgual= falso y parametro2 = 0 Hacer
 		
 		
 		Para i <-0 Hasta 99 Hacer
@@ -398,6 +413,7 @@ SubProceso CrearUsuario(matrizusuario Por Referencia)
 			si matrizusuario[i,0] = " " Entonces
 				
 				posicionFilaVacia <- i;
+				
 			FinSi
 			
 		FinPara
@@ -407,6 +423,7 @@ SubProceso CrearUsuario(matrizusuario Por Referencia)
 			
 			matrizusuario[posicionFilaVacia,1] <- NuevaContrasenia;
 			
+			parametro2 <-1; 
 			
 		FinSi
 		
@@ -441,19 +458,18 @@ SubProceso  cargarNuevoCliente(clientes Por Referencia,matrizUsuario Por Referen
 	definir arroba, puntoCom, valido, telefonoValido, dniValido Como Logico;
 	definir simboloArroba, simboloPuntoCom Como Caracter;
 	definir posicionFilaVacia_MU Como Entero;
-	
+	i <- 0;
 	simboloArroba <- "@";
 	simboloPuntoCom <- ".com";
 	indice <- 0;
 	
-	
+	Mientras clientes[i,0] <> " " Hacer
+		i <- i + 1;
+		indice <- i;
+		
+	FinMientras
 	
 	Repetir
-		Para i <- 0 Hasta 99 Hacer
-			Si clientes[i, 0] = " " Entonces
-				indice <- i;
-			FinSi
-		FinPara
 		
 		Escribir "Por favor, ingrese el nombre del cliente: ";
 		leer nombre;
@@ -632,7 +648,7 @@ SubProceso  ingresarDatosCliente(clientes Por Referencia,Usuario)
 	
 	
 	
-	Escribir indice;
+	
 	
 	Para i <- 0 Hasta 99 Hacer
 		Si clientes[i, 5] = Usuario Entonces 
@@ -1066,4 +1082,85 @@ Funcion x <- convertirFecha_aNumero(diaporMes,fechaCadena)
 	
 FinFuncion	
 
+
+//-----SUBPROCESO ImprimirFactura----- MENUCLIENTE----//
+SubProceso ImprimirFactura(matrizUsuario,matrizReservas,Usuario,matrizHabitacion, datosClientes,variableMenu Por Referencia)
+	definir i,j como entero;
+	Definir posicionUsuario como entero; 
+	Definir fechaIngreso_dia Como Entero;
+	Definir fechaEgreso_dia Como Entero;
+	definir cantidadDias Como Entero;
+	definir costoTotal Como Entero;
+	definir tipoHabitacionActual Como Cadena;
+	definir diasPorMes Como Entero;
+	Dimensionar diasPorMes(12);
+	
+	para i<-0 hasta 11 Hacer
+		DiasPorMes[i] <- i;
+		Si i=0 o i=2 o i=4 o i=7 o i=9 Entonces
+			DiasPorMes[i] <- 31;
+		Sino
+			Si i=1 Entonces
+				DiasPorMes[i] <- 29;
+	        SiNo
+				DiasPorMes[i] <-30;
+			FinSi
+		FinSi
+	FinPara
+	
+	
+	
+	para i <-0 hasta 99 Hacer
+		si Usuario = matrizReservas[i,3] Entonces
+			
+			para j <- 0 hasta 99 Hacer
+				si datosClientes[j,5] = Usuario Entonces
+					posicionUsuario <- j; 
+					
+				FinSi
+			FinPara
+			fechaIngreso_dia<- convertirFecha_aNumero(diasporMes,matrizReservas[i,1]);
+			fechaEgreso_dia <- convertirFecha_aNumero(diasporMes,matrizReservas[i,2]);
+			cantidadDias <- fechaEgreso_dia - fechaIngreso_dia;
+			
+			// el id habitacion  = matrizreservas[i,0]
+			
+			tipoHabitacionActual <- matrizHabitacion[ConvertirANumero(matrizReservas[i,0]),0];
+			// en la matrizHabitacion esta en precio y el tipo Entonces :
+			costoTotal <- ConvertirANumero(matrizHabitacion[ConvertirANumero(matrizReservas[i,0]),1] ) * cantidadDias; // el resultado es el precio de los dias que se queda 
+			
+			
+			Escribir "";
+			Escribir "--------------------------------------------------------------";
+			Escribir "                        FACTURA                               ";
+			Escribir "                    Tipo de Factura: B                        ";
+			Escribir "                HOTEL: La Posada del Carpincho                ";
+			Escribir "--------------------------------------------------------------";
+			Escribir "";
+			Escribir "RECEPTOR                          EMISOR                       ";
+			Escribir "--------------------------------------------------------------";
+			Escribir "Nombre: ", datosClientes[posicionUsuario,0], "             Nombre: La Posada del Carpincho ";
+			Escribir "DNI: ", datosClientes[posicionUsuario,4], "             Email: laposadadelcarpincho@gmail.com";
+			Escribir "Teléfono: ", datosClientes[posicionUsuario,3], "        Teléfono: 1152345678              ";
+			Escribir "Email: ", datosClientes[posicionUsuario,2], "                                                 ";
+			Escribir "--------------------------------------------------------------";
+			Escribir "";
+			Escribir "--------------------------------------------------------------";
+			Escribir "CONCEPTO:                                                      ";
+			Escribir "--------------------------------------------------------------";
+			Escribir "Precio de la habitación seleccionada:            $", matrizHabitacion[matrizReservas[i,0],1];
+			Escribir "";
+			Escribir "--------------------------------------------------------------";
+			Escribir "CANTIDAD A PAGAR:                                               ";
+			Escribir "--------------------------------------------------------------";
+			Escribir "Cantidad de noches:                          ", cantidadDias;
+			Escribir "Total a pagar:                               $", costoTotal;
+			Escribir "--------------------------------------------------------------";
+			Escribir "";
+
+		FinSi
+	FinPara
+	
+	variableMenu <- 0 ; 
+FinSubProceso
 
